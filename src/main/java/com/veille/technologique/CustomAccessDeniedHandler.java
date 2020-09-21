@@ -1,6 +1,5 @@
 package com.veille.technologique;
 
-import org.slf4j.Logger;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,11 +9,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     public static final Logger LOG
-            = System.Logger.getLogger(CustomAccessDeniedHandler.class);
+            = Logger.getLogger(String.valueOf(CustomAccessDeniedHandler.class));
     @Override
     public void handle(
             HttpServletRequest request,
@@ -23,12 +23,13 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
         Authentication auth
                 = SecurityContextHolder.getContext().getAuthentication();
+        /*
         if (auth != null) {
             LOG.warn("User: " + auth.getName()
                     + " attempted to access the protected URL: "
                     + request.getRequestURI());
         }
-
+        */
         response.sendRedirect(request.getContextPath() + "/accessDenied");
     }
 }

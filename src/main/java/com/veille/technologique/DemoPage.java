@@ -1,14 +1,19 @@
 package com.veille.technologique;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController
 public class DemoPage {
 
-    @GetMapping("/")
-    public String home(){
-        return ("<h1>Welcome everyone</h1>");
+    @RequestMapping("/")
+    public String home(HttpServletResponse httpResponse) throws IOException {
+        httpResponse.sendRedirect("/login");
+        return "redirect:/login";
     }
 
     @GetMapping("/user")
@@ -21,8 +26,5 @@ public class DemoPage {
         return ("<h1>Welcome Admin</h1>");
     }
 
-    @GetMapping("/*")
-    public String wrongURL(){
-        return ("<button>go</button>");
-    }
+
 }
