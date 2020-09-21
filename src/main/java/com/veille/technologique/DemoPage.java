@@ -20,4 +20,9 @@ public class DemoPage {
     public String admin(){
         return ("<h1>Welcome Admin</h1>");
     }
+
+    @GetMapping("/*")
+    public String wrongURL(){
+        return ("<button>go</button>");
+    }
 }
