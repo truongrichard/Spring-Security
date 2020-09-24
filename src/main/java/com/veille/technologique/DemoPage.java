@@ -10,11 +10,14 @@ import java.io.IOException;
 @RestController
 public class DemoPage {
 
+
     @RequestMapping("/")
     public String home(HttpServletResponse httpResponse) throws IOException {
         httpResponse.sendRedirect("/login");
         return "redirect:/login";
     }
+    
+
 
     @GetMapping("/user")
     public String user(){
@@ -25,6 +28,8 @@ public class DemoPage {
     public String admin(){
         return ("<h1>Welcome Admin</h1>");
     }
+
+
 
 
 }
