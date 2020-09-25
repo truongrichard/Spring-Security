@@ -1,4 +1,4 @@
-package com.veille.technologique.jwt;
+package com.veille.technologique.jwt.model;
 
 import java.io.Serializable;
 

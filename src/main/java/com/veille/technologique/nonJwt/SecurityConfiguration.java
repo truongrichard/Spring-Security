@@ -1,4 +1,4 @@
-package com.veille.technologique;
+package com.veille.technologique.nonJwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

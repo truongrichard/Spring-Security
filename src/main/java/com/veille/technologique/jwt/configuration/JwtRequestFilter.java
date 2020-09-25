@@ -1,5 +1,8 @@
-package com.veille.technologique.jwt;
+package com.veille.technologique.jwt.configuration;
 
+import com.veille.technologique.jwt.configuration.JwtUtil;
+import com.veille.technologique.jwt.service.JwtUserDetailsService;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +21,7 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private MyUserDetailsService userDetailsService;
+    private JwtUserDetailsService userDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -34,9 +37,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
-            username = jwtUtil.extractUsername(jwt);
+            try {
+                username = jwtUtil.getUsernameFromToken(jwt);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Unable to get JWT Token");
+            } catch (ExpiredJwtException e) {
+                System.out.println("JWT Token has expired");
+            }
         }
-
+        else {
+            logger.warn("JWT Token does not begin with Bearer String");
+        }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
