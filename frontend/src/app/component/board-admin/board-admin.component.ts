@@ -2,17 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import {UserService} from "../user.service";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-board-admin',
+  templateUrl: './board-admin.component.html',
+  styleUrls: ['./board-admin.component.css']
 })
-export class HomeComponent implements OnInit {
-  content: string;
+export class BoardAdminComponent implements OnInit {
+  content = '';
 
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.userService.getPublicContent().subscribe(
+    this.userService.getAdminBoard().subscribe(
       data => {
         this.content = data;
       },
