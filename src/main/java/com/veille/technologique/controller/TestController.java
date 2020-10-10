@@ -13,24 +13,24 @@ public class TestController {
 
     @GetMapping("/all")
     public String allAccess() {
-        return "Public Content.";
+        return "Tout le monde.";
     }
 
     @GetMapping("/etudiant")
-    @PreAuthorize("hasRole('ETUDIANT')")
+    @PreAuthorize("hasRole('ETUDIANT') or hasRole('EMPLOYEUR') or hasRole('GESTIONNAIRE')")
     public String userAccess() {
-        return "User Content.";
+        return "Étudiant contenu.";
     }
 
     @GetMapping("/employeur")
     @PreAuthorize("hasRole('EMPLOYEUR')")
     public String moderatorAccess() {
-        return "Moderator Board.";
+        return "Employeur contenu.";
     }
 
     @GetMapping("/gestionnaire")
     @PreAuthorize("hasRole('GESTIONNAIRE')")
     public String adminAccess() {
-        return "Admin Board.";
+        return "Gestionnaire contenu.";
     }
 }

@@ -6,6 +6,7 @@ import com.veille.technologique.model.Role;
 import com.veille.technologique.model.User;
 import com.veille.technologique.payload.JwtResponse;
 import com.veille.technologique.payload.LoginRequest;
+import com.veille.technologique.payload.MessageResponse;
 import com.veille.technologique.payload.SignupRequest;
 import com.veille.technologique.repository.RoleRepository;
 import com.veille.technologique.repository.UserRepository;
@@ -71,13 +72,13 @@ public class AuthController {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body("Error: Username is already taken!");
+                    .body(new MessageResponse("Error: Username is already taken!"));
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body("Error: Email is already in use!");
+                    .body(new MessageResponse("Error: Email is already in use!"));
         }
 
         // Create new user's account
@@ -120,7 +121,7 @@ public class AuthController {
         user.setRoles(roles);
         userRepository.save(user);
 
-        return ResponseEntity.ok("User registered successfully!");
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 }
 
