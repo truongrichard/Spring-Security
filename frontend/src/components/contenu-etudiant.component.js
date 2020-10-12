@@ -2,12 +2,15 @@ import React, { Component } from "react";
 
 import UserService from "../services/user.service";
 
+import { Redirect } from 'react-router-dom'
+
 export default class EtudiantContenu extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      content: ""
+      content: "",
+      readyToRedirect: true,
     };
   }
 
@@ -19,6 +22,13 @@ export default class EtudiantContenu extends Component {
     console.log(token)
     console.log(exp)
     console.log(Date.now() > exp)
+
+    if(Date.now() > exp){
+      this.setState({
+        readyToRedirect: true
+      });
+    }
+
     UserService.getEtudiantContenu().then(
       response => {
         this.setState({
@@ -39,6 +49,9 @@ export default class EtudiantContenu extends Component {
   }
 
   render() {
+
+    if (this.state.readyToRedirect) return <Redirect to="/login" />
+
     return (
       <div className="container">
         <header className="jumbotron">
