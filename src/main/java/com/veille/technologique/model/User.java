@@ -1,6 +1,7 @@
 package com.veille.technologique.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,10 +15,18 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
+    @Size(max = 20)
     private String username;
 
+    @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
 
+    @NotBlank
+    @Size(max = 120)
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)

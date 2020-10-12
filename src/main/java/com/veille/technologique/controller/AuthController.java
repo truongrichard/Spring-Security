@@ -1,6 +1,5 @@
 package com.veille.technologique.controller;
 
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,11 +7,17 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.veille.technologique.model.ERole;
 import com.veille.technologique.model.Role;
+import com.veille.technologique.model.User;
 import com.veille.technologique.payload.request.LoginRequest;
+import com.veille.technologique.payload.request.SignupRequest;
+import com.veille.technologique.payload.response.JwtResponse;
+import com.veille.technologique.payload.response.MessageResponse;
 import com.veille.technologique.repository.RoleRepository;
 import com.veille.technologique.repository.UserRepository;
 import com.veille.technologique.security.jwt.JwtUtils;
+import com.veille.technologique.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

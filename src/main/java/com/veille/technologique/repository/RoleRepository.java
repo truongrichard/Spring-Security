@@ -1,4 +1,14 @@
 package com.veille.technologique.repository;
 
-public interface RoleRepository {
+import java.util.Optional;
+
+import com.veille.technologique.model.ERole;
+import com.veille.technologique.model.Role;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+
+@Repository
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    Optional<Role> findByName(ERole name);
 }
