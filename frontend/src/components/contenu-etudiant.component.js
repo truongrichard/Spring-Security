@@ -12,6 +12,13 @@ export default class EtudiantContenu extends Component {
   }
 
   componentDidMount() {
+    let role = JSON.parse(localStorage.getItem('user')).roles
+    let token = JSON.parse(localStorage.getItem('user')).accessToken
+    let exp = JSON.parse(atob(token.split('.')[1])).exp * 1000
+    console.log(role[0])
+    console.log(token)
+    console.log(exp)
+    console.log(Date.now() > exp)
     UserService.getEtudiantContenu().then(
       response => {
         this.setState({
