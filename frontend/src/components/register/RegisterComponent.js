@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './../App.css';
-import './../css/Register.css';
+import '../../App.css';
+import '../../css/Register.css';
 import { Tab, Tabs } from 'react-bootstrap';
 import EmployeurRegister from './EmployeurRegister';
 import EtudiantRegister from './EtudiantRegister';

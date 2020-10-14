@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import Stage from '../model/Stage'
-import StageService from '../service/StageService';
+import Stage from '../../model/Stage'
+import StageService from '../../service/StageService';
 import { Field, Form, ErrorMessage, withFormik } from "formik";
-import Employeur from '../model/Employeur';
-import '../css/Forms.css';
-import ValidationChamp from './ValidationChampVide'
-import ValidationDate from './ValidationDate'
-import EmployeurService from "../service/EmployeurService";
+import '../../css/Forms.css';
+import ValidationChamp from '../ValidationChampVide'
+import ValidationDate from '../ValidationDate'
+import EmployeurService from "../../service/EmployeurService";
 
 const isRequired = (message) => (value) => (!!value ? undefined : message);
 
@@ -18,16 +17,32 @@ class CreateStageComponent extends Component {
   }
 
   feedBack() {
-
     this.setState({ sended: true });
   }
 
   cancel() {
     this.state.history.push('/stages');
   }
-  render() {
-    const { handleSubmit, isSubmitting, isValid, isValidating, status, employeur } = this.props;
 
+  componentDidMount() {
+
+    let role = JSON.parse(localStorage.getItem('user')).roles[0]
+    let token = JSON.parse(localStorage.getItem('user')).accessToken
+    let exp = JSON.parse(atob(token.split('.')[1])).exp * 1000
+    console.log(role)
+    console.log(token)
+    console.log(exp)
+    console.log(Date.now() > exp)
+
+    if(Date.now() > exp && role === "ROLE_EMPLOYEUR"){
+        this.setState({
+            readyToRedirect: true
+        });
+    }
+  }
+
+  render() {
+    const { handleSubmit, isSubmitting, isValid, isValidating, status } = this.props;
 
     return (
       <div className="card p-3">
@@ -140,10 +155,7 @@ class CreateStageComponent extends Component {
 
 export default withFormik({
   mapPropsToValues(props) {
-
-
-    return new Stage;
-
+    return new Stage();
   },
 
   validate(values) {
@@ -172,25 +184,11 @@ export default withFormik({
     return errors;
   },
 
-  saveCurrentEmployee(values) {
-
-    var id;
-    if (localStorage.getItem("desc") == "Employeur")
-      id = localStorage.getItem("id");
-
-    let employee = new Employeur;
-    employee = EmployeurService.getById(id)
-    employee.Stage = values;
-    EmployeurService.put(employee, id)
-
-    return employee;
-  },
-
   handleSubmit(values, formikBag) {
 
     var id;
-    if (localStorage.getItem("desc") == "Employeur")
-      id = localStorage.getItem("id");
+    if (JSON.parse(localStorage.getItem('user')).roles[0] === "ROLE_EMPLOYEUR")
+        id = JSON.parse(localStorage.getItem('user')).id;
 
     let stage = new Stage();
 
@@ -202,7 +200,6 @@ export default withFormik({
 
         formikBag.setStatus({ message: "Stage crée avec succès" });
 
-        //hide message 
         setTimeout(() => {
           formikBag.setStatus({ message: '' });
         }, 3000);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import EtudiantService from '../service/EtudiantService';
+import EtudiantService from '../../service/EtudiantService';
 
 import { Redirect } from 'react-router-dom'
 

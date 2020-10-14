@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
-import './../App.css';
-import './../css/Register.css';
-import Employeur from "../model/Employeur";
-import EmployeurService from "../service/EmployeurService";
-import {Redirect} from "react-router-dom";
-import {Formik, Field, Form, ErrorMessage, withFormik} from "formik";
+import '../../App.css';
+import '../../css/Register.css';
+import Employeur from "../../model/Employeur";
+import EmployeurService from "../../service/EmployeurService";
+import {Formik, Field, Form, ErrorMessage} from "formik";
 import * as Yup from 'yup';
-import ValidationChamp from './ValidationChampVide';
-import UserService from "../service/UserService";
 
 
 
@@ -37,8 +34,6 @@ export default class EmployeurRegister extends Component {
         super(props);
         this.state = new Employeur();
     }
-
-  
 
     render() {
 

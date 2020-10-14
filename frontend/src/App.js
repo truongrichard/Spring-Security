@@ -1,17 +1,17 @@
 import React from 'react';
 import './App.css';
 
-import EtudiantRegister from "./components/EtudiantRegister";
-import ListStagesComponent from "./components/ListStageComponent";
-import Login from "./components/Login";
-import { Route, Switch,Router , withRouter } from 'react-router-dom';
+import EtudiantRegister from "./components/register/EtudiantRegister";
+import ListStagesComponent from "./components/employeur/ListStageComponent";
+import Login from "./components/login/Login";
+import { Route, Switch } from 'react-router-dom';
 import Home from "./components/Home";
 import HeaderComponent from "./components/HeaderComponent";
-import ListEtudiantsComponent from "./components/ListEtudiantComponent";
-import HomeEtudiant from "./components/HomeEtudiant";
-import Register from './components/RegisterComponent';
-import Logout from './components/Logout';
-import CreateStageComponent from './components/CreateStageComponent'
+import ListEtudiantsComponent from "./components/gestionnaire/ListEtudiantComponent";
+import HomeEtudiant from "./components/etudiant/HomeEtudiant";
+import Register from './components/register/RegisterComponent';
+import Logout from './components/login/Logout';
+import CreateStageComponent from './components/employeur/CreateStageComponent'
 
 function App() {
   return (
@@ -27,7 +27,7 @@ function App() {
           <Route path='/login' component={Login} />
           <Route path='/register' component={Register} />
           <Route path='/logout' component={Logout} />
-          <Route path="/etudiants" component={ListEtudiantsComponent}></Route>
+          <Route path="/etudiants" component={ListEtudiantsComponent} />
           <Route path='/etudiant' component={HomeEtudiant} />
           <Route path='/createStage' component={CreateStageComponent} />
         </Switch>

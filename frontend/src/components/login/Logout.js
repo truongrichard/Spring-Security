@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import './../App.css';
-import './../css/Register.css';
-import AuthService from "../service/auth.service";
+import '../../App.css';
+import '../../css/Register.css';
+import AuthService from "../../service/auth.service";
 
 
 export default class Logout extends Component {

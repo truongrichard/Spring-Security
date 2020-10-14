@@ -1,11 +1,8 @@
 import React, {Component} from "react";
-import Etudiant from "../model/Etudiant";
-import {simpleFetch} from "../crud/DataCRUD";
+import Etudiant from "../../model/Etudiant";
 import * as Yup from 'yup';
 import {ErrorMessage, Field, Form, Formik} from "formik";
-import UserService from "../service/UserService";
-import EmployeurService from "../service/EmployeurService";
-import EtudiantService from "../service/EtudiantService";
+import EtudiantService from "../../service/EtudiantService";
 
 
 const formSchema = Yup.object().shape({
@@ -37,37 +34,7 @@ export default class EtudiantRegister extends Component {
     constructor(props) {
         super(props);
         this.state = new Etudiant()
-        //this.handleSubmit = this.handleSubmit.bind(this)
-        //this.handleChange = this.handleChange.bind(this)
     }
-
-    handleChange(event) {
-        this.setState({[event.target.name]: event.target.value})
-    }
-
-    /*
-    handleSubmit(event) {
-        event.preventDefault()
-        this.setState({statutStage: "aucun stage"});
-        simpleFetch("/etudiants/create", "POST", this.state).then(r => console.log(r))
-    }
-    */
-
-    /*
-    async handleSubmit(event) {
-        event.preventDefault();
-        let x = "email";
-        let data = await EtudiantService.getByEmail(this.state[x]);
-        if (data[x] != this.state[x]){
-            //await this.setState({statutStage: "aucun stage"});
-            //await this.setState({desc: "Etudiant"});
-            await EtudiantService.post(this.state);
-            // await this.props.history.push('/login'); // undefined 
-        } else {
-             alert("Ce email est deja utilise");
-        }
-    }
-    */
 
     render() {
         return (

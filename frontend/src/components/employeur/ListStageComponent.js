@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import StageService from '../service/StageService';
+import StageService from '../../service/StageService';
 
 
 export default class ListStagesComponent extends Component {
@@ -29,7 +29,7 @@ export default class ListStagesComponent extends Component {
         console.log(exp)
         console.log(Date.now() > exp)
 
-        if(Date.now() > exp && role == "ROLE_EMPLOYEUR"){
+        if(Date.now() > exp && role === "ROLE_EMPLOYEUR"){
             this.setState({
                 readyToRedirect: true
             });
@@ -38,11 +38,12 @@ export default class ListStagesComponent extends Component {
         console.log(JSON.parse(localStorage.getItem('user')).id)
 
         var id;
-        if (JSON.parse(localStorage.getItem('user')).roles[0] == "ROLE_EMPLOYEUR")
+        if (JSON.parse(localStorage.getItem('user')).roles[0] === "ROLE_EMPLOYEUR")
             id = JSON.parse(localStorage.getItem('user')).id;
 
         StageService.getStagesByEmployeurId(id).then((res) => { this.setState({ stage: res.data }) })
     }
+    
     render() {
         return (
 
