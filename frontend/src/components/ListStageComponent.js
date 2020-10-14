@@ -20,9 +20,26 @@ export default class ListStagesComponent extends Component {
 
 
     componentDidMount() {
+
+        let role = JSON.parse(localStorage.getItem('user')).roles[0]
+        let token = JSON.parse(localStorage.getItem('user')).accessToken
+        let exp = JSON.parse(atob(token.split('.')[1])).exp * 1000
+        console.log(role)
+        console.log(token)
+        console.log(exp)
+        console.log(Date.now() > exp)
+
+        if(Date.now() > exp && role == "ROLE_EMPLOYEUR"){
+            this.setState({
+                readyToRedirect: true
+            });
+        }
+
+        console.log(JSON.parse(localStorage.getItem('user')).id)
+
         var id;
-        if (localStorage.getItem("desc") == "Employeur")
-            id = localStorage.getItem("id");
+        if (JSON.parse(localStorage.getItem('user')).roles[0] == "ROLE_EMPLOYEUR")
+            id = JSON.parse(localStorage.getItem('user')).id;
 
         StageService.getStagesByEmployeurId(id).then((res) => { this.setState({ stage: res.data }) })
     }

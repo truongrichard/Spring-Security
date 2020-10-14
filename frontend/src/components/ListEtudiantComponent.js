@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import EtudiantService from '../service/EtudiantService';
 
+import { Redirect } from 'react-router-dom'
+
 export default class ListEtudiantsComponent extends Component {
     constructor(props) {
         super(props);
@@ -22,6 +24,8 @@ export default class ListEtudiantsComponent extends Component {
     }
 
     render() {
+        
+        if (this.state.readyToRedirect) return <Redirect to="/" />
 
         return (
             <div>

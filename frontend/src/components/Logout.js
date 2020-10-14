@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import './../App.css';
 import './../css/Register.css';
-import LoginService from "../service/LoginService";
+import AuthService from "../service/auth.service";
 
 
 export default class Logout extends Component {
     constructor(props) {
         super(props);
 
-        LoginService.logout();
+        AuthService.logout();
         this.props.history.push('/?refresh');
     }
 

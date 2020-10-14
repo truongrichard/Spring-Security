@@ -46,11 +46,11 @@ function EtudiantNav(props){
 
 
 function NavType(props){
-    if (props.desc.toUpperCase() === "ETUDIANT")
+    if (props.desc.toUpperCase() === "ROLE_ETUDIANT")
         return <EtudiantNav/>
-    else if (props.desc.toUpperCase() === "EMPLOYEUR")
+    else if (props.desc.toUpperCase() === "ROLE_EMPLOYEUR")
         return <EmployeurNav/>
-    else if (props.desc.toUpperCase() === "GESTIONNAIRE")
+    else if (props.desc.toUpperCase() === "ROLE_GESTIONNAIRE")
         return <GestionnaireNav/>
     else
         return <NotLoggedInNav/>
@@ -59,7 +59,7 @@ function NavType(props){
 class HeaderComponent extends Component {
     constructor(props) {
         super(props);
-        this.state = {desc : localStorage.getItem("desc") == null ? "" : localStorage.getItem("desc")}
+        this.state = {desc : localStorage.getItem("user") == null ? "" : JSON.parse(localStorage.getItem('user')).roles[0]}
 
     }
 

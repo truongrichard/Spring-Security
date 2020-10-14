@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Employeur from '../model/Employeur';
 import EmployeurService from '../service/EmployeurService'
 import CreateStageComponent from './CreateStageComponent';
-import { Link } from 'react-router-dom';
+
+import { Redirect } from 'react-router-dom'
 
 class HomeEmployeur extends Component {
     constructor(props) {
@@ -13,6 +13,21 @@ class HomeEmployeur extends Component {
     }
 
     async componentDidMount() {
+
+        let role = JSON.parse(localStorage.getItem('user')).roles[0]
+        let token = JSON.parse(localStorage.getItem('user')).accessToken
+        let exp = JSON.parse(atob(token.split('.')[1])).exp * 1000
+        console.log(role)
+        console.log(token)
+        console.log(exp)
+        console.log(Date.now() > exp)
+
+        if(Date.now() > exp && role == "ROLE_EMPLOYEUR"){
+            this.setState({
+                readyToRedirect: true
+            });
+        }
+
         var id;
         if (localStorage.getItem("desc") == "Etudiant")
             id = localStorage.getItem("id");
@@ -26,6 +41,9 @@ class HomeEmployeur extends Component {
     }
 
     render() {
+
+        if (this.state.readyToRedirect) return <Redirect to="/" />
+
         const createStage = this.state.createStage;
         let button;
         if (createStage) { button = <button><CreateStageComponent /></button> }

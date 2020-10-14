@@ -5,6 +5,7 @@ import com.equipe1.repository.EmployeurRepository;
 import com.equipe1.repository.EtudiantRepository;
 import com.equipe1.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -28,6 +29,8 @@ public class InsertDataService {
     private GestionnaireService gestionnaireService;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    PasswordEncoder encoder;
 
     @Transactional
     public void insertEtudiant(){
@@ -35,7 +38,7 @@ public class InsertDataService {
         e1.setAdresse("123456");
         e1.setEmail("richard@email.com");
         e1.setMatricule("1772397");
-        e1.setPassword("123456");
+        e1.setPassword(encoder.encode("12345"));
         e1.setPrenom("richard");
         e1.setNom("truong");
         e1.setStatutStage("possede stage");
@@ -56,7 +59,7 @@ public class InsertDataService {
         e2.setAdresse("123456");
         e2.setEmail("alex@email.com");
         e2.setMatricule("1501279");
-        e2.setPassword("123456");
+        e2.setPassword(encoder.encode("12345"));
         e2.setPrenom("alex");
         e2.setNom("truong");
         e2.setStatutStage("aucun stage");
@@ -80,7 +83,7 @@ public class InsertDataService {
 
         Employeur e1 = new Employeur();
         e1.setEmail("banque2@email.com");
-        e1.setPassword("12345");
+        e1.setPassword(encoder.encode("12345"));
         e1.setAdresse("12345");
         e1.setNomEntreprise("banque2");
         e1.setTelephone("888-888-8888");
@@ -119,7 +122,7 @@ public class InsertDataService {
         g1.setNom("toto");
         g1.setPrenom("toto");
         g1.setEmail("toto@toto.to");
-        g1.setPassword("12345");
+        g1.setPassword(encoder.encode("12345"));
         g1.setTelephone("12345");
 
         g1.setUsername("admin01");
