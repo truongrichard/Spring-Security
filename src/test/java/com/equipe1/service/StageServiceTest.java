@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -24,10 +25,13 @@ import static org.mockito.Mockito.doReturn;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class StageServiceTest {
+
     @Autowired
     private StageService service;
+
     @MockBean
     private StageRepository repository;
+
     private Stage s1;
     private Stage s2;
 

@@ -11,6 +11,7 @@ class StageService{
     getStages(){
         return axios.get(STAGES_URL);
     }
+    
     getStagesByEmployeurId(idEmployeur){
         return axios.get("http://localhost:8080/stageByEmployeurId?idEmployeur=" + idEmployeur, { headers: authHeader() });
     }

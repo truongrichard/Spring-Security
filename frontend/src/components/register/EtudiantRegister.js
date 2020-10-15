@@ -4,8 +4,11 @@ import * as Yup from 'yup';
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import EtudiantService from "../../service/EtudiantService";
 
-
 const formSchema = Yup.object().shape({
+
+    username: Yup.string()
+        .required('Veuillez saisir un username valide')
+        .min(6, "doivent comprendre au moins 6 caractères."),
 
     email: Yup.string()
         .required('Veuillez saisir un email valide')
@@ -45,6 +48,7 @@ export default class EtudiantRegister extends Component {
                 <h5 className="card-title text-center p-3" style={{background: '#E3F9F0 '}}>Nouvel Étudiant</h5>
                 <Formik
                     initialValues={{
+                        username: "",
                         email: "",
                         password: "",
                         nom: "",
@@ -87,6 +91,19 @@ export default class EtudiantRegister extends Component {
                         <Form>
                             <div className="container text-left justify-content-center">
 
+                                <div className="row">
+                                    <div className="col-sm-4 offset-sm-4 text-center">
+                                        <div className="form-group">
+                                            <label className="control-label">Username</label>
+                                            <Field type="text"
+                                                   name="username"
+                                                   className="form-control"
+                                                   />
+                                            <ErrorMessage name="username">{msg => <div
+                                                className="badge alert-danger">{msg}</div>}</ErrorMessage>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div className="row">
                                     <div className="col-sm-4 offset-sm-4 text-center">
                                         <div className="form-group">

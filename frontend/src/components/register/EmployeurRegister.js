@@ -6,12 +6,12 @@ import EmployeurService from "../../service/EmployeurService";
 import {Formik, Field, Form, ErrorMessage} from "formik";
 import * as Yup from 'yup';
 
-
-
-
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{2,4}?[ \\-]*[0-9]{2,4}?$/;
 
 const formSchema = Yup.object().shape({
+    username: Yup.string()
+        .required('Veuillez saisir un username valide')
+        .min(6, "doivent comprendre au moins 6 caractères."),
     nomEntreprise: Yup.string().required('Veuillez saisir un nom valide'),
     email: Yup.string()
         .required('Veuillez saisir un email valide')
@@ -26,7 +26,6 @@ const formSchema = Yup.object().shape({
     adresse: Yup.string().required('Veuillez saisir un adresse valide'),
 
 });
-
 
 export default class EmployeurRegister extends Component {
     
@@ -45,6 +44,7 @@ export default class EmployeurRegister extends Component {
                         <h5 className="card-title text-center p-3" style={{background: '#E3F9F0 '}}>Nouvel employeur</h5>
                         <Formik
                             initialValues={{
+                                username: "",
                                 nomEntreprise: "",
                                 email: "",
                                 password: "",
@@ -92,6 +92,20 @@ export default class EmployeurRegister extends Component {
                             {({status, isSubmitting, isValid, isValidating}) => (
                                 <Form>
                                     <div className="container text-left justify-content-center">
+
+                                        <div className="row">
+                                            <div className="col-sm-4 offset-sm-4 text-center">
+                                                <div className="form-group">
+                                                    <label className="control-label">Username</label>
+                                                    <Field type="text"
+                                                           name="username"
+                                                           className="form-control"
+                                                           />
+                                                    <ErrorMessage name="username">{msg => <div
+                                                        className="badge alert-danger">{msg}</div>}</ErrorMessage>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         <div className="row">
                                             <div className="col-sm-4 offset-sm-4 text-center">

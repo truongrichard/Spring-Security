@@ -6,14 +6,15 @@ import '../../css/Forms.css';
 import ValidationChamp from '../ValidationChampVide'
 import ValidationDate from '../ValidationDate'
 import EmployeurService from "../../service/EmployeurService";
+import AuthService from '../../service/auth.service';
+import { Redirect } from 'react-router-dom';
 
 const isRequired = (message) => (value) => (!!value ? undefined : message);
 
 class CreateStageComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { sended: false }
-
+    this.state = { sended: false, readyToRedirect: false, }
   }
 
   feedBack() {
@@ -26,22 +27,17 @@ class CreateStageComponent extends Component {
 
   componentDidMount() {
 
-    let role = JSON.parse(localStorage.getItem('user')).roles[0]
-    let token = JSON.parse(localStorage.getItem('user')).accessToken
-    let exp = JSON.parse(atob(token.split('.')[1])).exp * 1000
-    console.log(role)
-    console.log(token)
-    console.log(exp)
-    console.log(Date.now() > exp)
-
-    if(Date.now() > exp && role === "ROLE_EMPLOYEUR"){
-        this.setState({
-            readyToRedirect: true
-        });
-    }
+    if(AuthService.verifyTokenExpired && !EmployeurService.verifyRole()){
+      this.setState({
+          readyToRedirect: true
+      });
+    } 
   }
 
   render() {
+
+    if (this.state.readyToRedirect) return <Redirect to="/" />
+
     const { handleSubmit, isSubmitting, isValid, isValidating, status } = this.props;
 
     return (
@@ -173,7 +169,7 @@ export default withFormik({
       errors.dateFin = 'La date finale ne doit pas être inférieure à la date initiale. '
     }
 
-    if (limitApplicationDate < startDate || limitApplicationDate > finalDate) {
+    if (limitApplicationDate > startDate || limitApplicationDate > finalDate) {
       errors.dateLimiteCandidature = 'la date est inférieure à la date de début ou supérieur à la date finale'
     }
 
@@ -187,8 +183,7 @@ export default withFormik({
   handleSubmit(values, formikBag) {
 
     var id;
-    if (JSON.parse(localStorage.getItem('user')).roles[0] === "ROLE_EMPLOYEUR")
-        id = JSON.parse(localStorage.getItem('user')).id;
+    id = AuthService.getTokenId();
 
     let stage = new Stage();
 

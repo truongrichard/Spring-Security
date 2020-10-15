@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
 import '../../App.css';
-import axios from "axios";
+
+import EtudiantService from '../../service/EtudiantService';
+import AuthService from '../../service/auth.service';
+import { Redirect } from 'react-router-dom';
 
 export default class HomeEtudiant extends Component {
     constructor(props) {
         super(props);
         this.inputRef = React.createRef();
-        this.state = {etudiant: {}, displayInvalidFileMessage: false, displaySubmitCVButton: false, hasAlreadyCV: false, hasUploadedCV: false, id: ''};
+        this.state = {
+            etudiant: {}, 
+            displayInvalidFileMessage: false, 
+            displaySubmitCVButton: false, 
+            hasAlreadyCV: false, 
+            hasUploadedCV: false, 
+            id: '', 
+            readyToRedirect: false,};
         this.handleSubmit = this.handleSubmit.bind(this)
         this.onChangeHandler = this.onChangeHandler.bind(this)
     }
@@ -26,13 +36,17 @@ export default class HomeEtudiant extends Component {
     }
 
     async componentDidMount() {
-        var id;
-        if (localStorage.getItem("desc") === "Etudiant")
-            id = localStorage.getItem("id");
 
-        const {data: etudiant} = await axios.get(
-            "http://localhost:8080/etudiants/get?idEtudiant=" + id
-    );
+        if(AuthService.verifyTokenExpired && !EtudiantService.verifyRole()){
+            this.setState({
+                readyToRedirect: true
+            });
+        }
+
+        var id;
+        id = AuthService.getTokenId();
+
+        const {data: etudiant} = await EtudiantService.getEtudiantById(id);
         this.setState({etudiant: etudiant});
         this.setState({hasAlreadyCV: this.state.etudiant.cv !== undefined} );
     }
@@ -55,8 +69,7 @@ export default class HomeEtudiant extends Component {
                 this.setState({displayInvalidFileMessage: false});
                 this.setState({displaySubmitCVButton: true});
             }
-        }
-        ;
+        };
         if (err !== '') {
             event.target.value = null
             return false;
@@ -66,21 +79,21 @@ export default class HomeEtudiant extends Component {
     }
     handleSubmit(event) {
         event.preventDefault()
+        
         var id;
-        if (localStorage.getItem("desc") === "Etudiant")
-            id = localStorage.getItem("id");
+        id = AuthService.getTokenId();
+
         const formData = new FormData();
         formData.append('file', this.state.etudiant.cv);
-        const options = {
-            method: 'PUT',
-            body: formData
-        };
-        fetch('http://localhost:8080/etudiants/saveCV/' + id, options);
+        EtudiantService.uploadCV(id, formData);
         this.setState({hasUploadedCV: true});
     }
 
 
     render() {
+        
+        if (this.state.readyToRedirect) return <Redirect to="/" />
+
         return (
             <form onSubmit={this.handleSubmit} className="d-flex flex-column">
             <div className="container">

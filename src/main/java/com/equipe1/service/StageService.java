@@ -37,7 +37,7 @@ public class StageService {
             if(result.getEmployeur().getId() == employeur.getId()){
                 stagesResul.add(result);
             }
-            System.out.println(result.getEmployeur().getNomEntreprise());
+            //System.out.println(result.getEmployeur().getNomEntreprise());
         }
 
         return stagesResul;

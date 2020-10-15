@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
@@ -30,6 +31,9 @@ public class EmployeurServiceTest {
 
     @MockBean
     private EmployeurRepository employeurRepository;
+
+    @Autowired
+    PasswordEncoder encoder;
 
     private Employeur employeur1;
     private Employeur employeur2;
@@ -58,6 +62,7 @@ public class EmployeurServiceTest {
 
     @Test
     public void saveEmployeur() {
+        employeur1.setPassword(encoder.encode("12345"));
         when(employeurRepository.save(employeur1)).thenReturn(employeur1);
         Employeur employeur = employeurService.saveEmployeur(employeur1);
         assertNotNull(employeur1);

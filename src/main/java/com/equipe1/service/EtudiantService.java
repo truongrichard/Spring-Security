@@ -8,6 +8,7 @@ import com.equipe1.repository.EtudiantRepository;
 import com.equipe1.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,6 +26,9 @@ public class EtudiantService {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    PasswordEncoder encoder;
+
     public EtudiantService(EtudiantRepository etudiantRepository){
         this.etudiantRepository = etudiantRepository;
     }
@@ -39,6 +43,8 @@ public class EtudiantService {
 
     public Etudiant saveEtudiant(Etudiant etudiant){
         etudiant.setStatutStage("aucun stage");
+
+        etudiant.setPassword(encoder.encode(etudiant.getPassword()));
 
         Set<Role> roles = new HashSet<>();
         Role role = roleRepository.findByName(ERole.ROLE_ETUDIANT)

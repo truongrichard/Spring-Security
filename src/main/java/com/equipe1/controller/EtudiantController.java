@@ -3,6 +3,7 @@ package com.equipe1.controller;
 import com.equipe1.model.Employeur;
 import com.equipe1.model.Etudiant;
 import com.equipe1.service.EtudiantService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,11 +26,13 @@ public class EtudiantController {
     }
 
     @GetMapping("/findAll")
+    @PreAuthorize("hasRole('ETUDIANT') or hasRole('GESTIONNAIRE')")
     public List<Etudiant> getAllEtudiant(){
         return etudiantService.getEtudiants();
     }
 
     @GetMapping("/get")
+    @PreAuthorize("hasRole('ETUDIANT')")
     public Optional<Etudiant> getEtudiant(@RequestParam("idEtudiant") Long idEtudiant){
         return etudiantService.findEtudiantById(idEtudiant);
     }
@@ -40,27 +43,33 @@ public class EtudiantController {
     }
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('ETUDIANT')")
     public Etudiant updateEtudiant(@RequestBody Etudiant etudiant, @PathVariable Long id){
-        System.out.println(etudiant + " , id : " + id);
+        //System.out.println(etudiant + " , id : " + id);
         return etudiantService.updateEtudiant(etudiant, id);
     }
 
     @PutMapping("/saveCV/{id}")
+    @PreAuthorize("hasRole('ETUDIANT')")
     public Etudiant saveCVEtudiant(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws IOException {
         Optional<Etudiant> etudiantFound = etudiantService.findEtudiantById(id);
         Etudiant etudiant = etudiantFound.get();
         byte[] bytes = file.getBytes();
+        System.out.println("BEFORE : " + etudiant.getCv());
         etudiant.setCv(bytes);
-        System.out.println(etudiant + " , id : " + id);
+        System.out.println("AFTER : " + etudiant.getCv());
+        //System.out.println(etudiant + " , id : " + id);
         return etudiantService.updateEtudiant(etudiant, id);
     }
 
     @GetMapping("/matricule")
+    @PreAuthorize("hasRole('ETUDIANT')")
     public Optional<Etudiant> getEtudiantByMatricule(@RequestParam("matricule") String matricule){
         return etudiantService.findEtudiantByMatricule(matricule);
     }
 
     @PutMapping("/update/cv/{id}")
+    @PreAuthorize("hasRole('ETUDIANT')")
     public Etudiant updateEtudiantCV(@RequestBody Etudiant etudiant, @PathVariable Long id){
         return etudiantService.updateEtudiant(etudiant, id);
     }

@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import StageService from '../../service/StageService';
-
+import EmployeurService from '../../service/EmployeurService';
+import AuthService from '../../service/auth.service';
+import { Redirect } from 'react-router-dom';
 
 export default class ListStagesComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
             stage: [],
-            employeurId: ""
+            employeurId: "",
+            readyToRedirect: false,
         };
 
         this.addStage = this.addStage.bind(this);
@@ -21,30 +24,22 @@ export default class ListStagesComponent extends Component {
 
     componentDidMount() {
 
-        let role = JSON.parse(localStorage.getItem('user')).roles[0]
-        let token = JSON.parse(localStorage.getItem('user')).accessToken
-        let exp = JSON.parse(atob(token.split('.')[1])).exp * 1000
-        console.log(role)
-        console.log(token)
-        console.log(exp)
-        console.log(Date.now() > exp)
-
-        if(Date.now() > exp && role === "ROLE_EMPLOYEUR"){
+        if(AuthService.verifyTokenExpired && !EmployeurService.verifyRole()){
             this.setState({
                 readyToRedirect: true
             });
         }
 
-        console.log(JSON.parse(localStorage.getItem('user')).id)
-
         var id;
-        if (JSON.parse(localStorage.getItem('user')).roles[0] === "ROLE_EMPLOYEUR")
-            id = JSON.parse(localStorage.getItem('user')).id;
-
+        id = AuthService.getTokenId();
+        
         StageService.getStagesByEmployeurId(id).then((res) => { this.setState({ stage: res.data }) })
     }
     
     render() {
+        
+        if (this.state.readyToRedirect) return <Redirect to="/" />
+
         return (
 
             <div className="container">

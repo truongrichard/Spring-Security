@@ -1,12 +1,12 @@
+import authHeader from './auth-header';
+
 const baseURL = "http://localhost:8080/employeurs";
 
 class EmployeurService{
-    async getAll(){
-        let data;
-        await fetch(baseURL +"/findAll", {method: "GET"} )
-            .then(r => data = r.json())
-            .catch(error => data = {});
-        return data;
+
+    verifyRole(){
+        let role = JSON.parse(localStorage.getItem('user')).roles[0]
+        return role === "ROLE_EMPLOYEUR";
     }
 
     async getByEmail(email){
@@ -19,7 +19,7 @@ class EmployeurService{
 
     async getById(id) {
         let data;
-        await fetch(baseURL + "/get?idEmployeur=" + id, {method: "GET"})
+        await fetch(baseURL + "/get?idEmployeur=" + id, {method: "GET", headers: authHeader() })
             .then(r => data = r.json())
             .catch(error => data = {});
         return data;
@@ -28,16 +28,6 @@ class EmployeurService{
     async post(employeur){
         fetch(baseURL + "/createEmploye",
             {method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(employeur)} )
-            .then(r => r.json());
-    }
-
-    async put(employeur,id){
-        fetch(baseURL + "/update/"+id,
-            {method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },

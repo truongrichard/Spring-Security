@@ -32,13 +32,11 @@ public class EmployeurController {
     }
 
     @GetMapping("email")
-    @PreAuthorize("hasRole('EMPLOYEUR')")
     public Employeur getEmployeurByEmail(@RequestParam("email") String email){
         return employeurService.getEmployeurByEmail(email);
     }
 
     @PostMapping("createEmploye")
-    @PreAuthorize("hasRole('EMPLOYEUR')")
     public Employeur createEmployeur(@RequestBody Employeur employeur){
         return employeurService.saveEmployeur(employeur);
     }

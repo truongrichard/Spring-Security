@@ -66,7 +66,6 @@ public class InsertDataService {
         e2.setTelephone("555-444-4444");
         e2.setProgramme("Secondaire 3");
 
-
         e2.setUsername("truongalex");
         roles = new HashSet<>();
         role = roleRepository.findByName(ERole.ROLE_ETUDIANT)
@@ -111,9 +110,7 @@ public class InsertDataService {
         stage1.setVille("Montreal");
         stage1.setEmployeur(e1);
 
-
         stageService.saveStage(stage1);
-
     }
 
     @Transactional

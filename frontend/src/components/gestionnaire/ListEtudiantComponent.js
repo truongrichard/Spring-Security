@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import EtudiantService from '../../service/EtudiantService';
-
-import { Redirect } from 'react-router-dom'
+import GestionnaireService from '../../service/GestionnaireService';
+import AuthService from '../../service/auth.service';
+import { Redirect } from 'react-router-dom';
 
 export default class ListEtudiantsComponent extends Component {
     constructor(props) {
         super(props);
-        this.state = { etudiants: [], filter: '', statut: '', };
+        this.state = { etudiants: [], filter: '', statut: '', readyToRedirect: false };
     }
 
     handleChangeText = event => {
@@ -19,8 +20,15 @@ export default class ListEtudiantsComponent extends Component {
     };
     
     async componentDidMount() {
-            const { data: etudiants } = await EtudiantService.getEtudiants();
-            this.setState({ etudiants });
+
+        if(AuthService.verifyTokenExpired && !GestionnaireService.verifyRole()){
+            this.setState({
+                readyToRedirect: true
+            });
+        }
+
+        const { data: etudiants } = await EtudiantService.getEtudiants();
+        this.setState({ etudiants });
     }
 
     render() {

@@ -1,7 +1,10 @@
 package com.equipe1.service;
 
+import com.equipe1.model.ERole;
 import com.equipe1.model.Etudiant;
+import com.equipe1.model.Role;
 import com.equipe1.repository.EtudiantRepository;
+import com.equipe1.repository.RoleRepository;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.commons.io.FileUtils;
@@ -13,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.*;
@@ -20,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -33,6 +38,9 @@ public class EtudiantServiceTest {
 
     @MockBean
     private EtudiantRepository repository;
+
+    @Autowired
+    PasswordEncoder encoder;
 
     private Etudiant e1;
     private Etudiant e2;
@@ -88,6 +96,7 @@ public class EtudiantServiceTest {
     @DisplayName("TEST saveEtudiant")
     void testSaveEtudiant() {
         // Arrange
+        e1.setPassword(encoder.encode("12345"));
         doReturn(e1).when(repository).save(any());
         // Act
         Etudiant etudiant = service.saveEtudiant(e1);

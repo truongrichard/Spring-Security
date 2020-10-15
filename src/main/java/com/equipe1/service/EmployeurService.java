@@ -7,6 +7,7 @@ import com.equipe1.repository.EmployeurRepository;
 import com.equipe1.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -24,8 +25,11 @@ public class EmployeurService {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    PasswordEncoder encoder;
+
     public EmployeurService (EmployeurRepository employeurRepository){
-        this.employeurRepo= employeurRepository;
+        this.employeurRepo = employeurRepository;
     }
 
     public List<Employeur> getEmployeurs(){
@@ -41,6 +45,8 @@ public class EmployeurService {
     }
 
     public Employeur saveEmployeur(Employeur employeur){
+
+        employeur.setPassword(encoder.encode(employeur.getPassword()));
 
         Set<Role> roles = new HashSet<>();
         Role role = roleRepository.findByName(ERole.ROLE_EMPLOYEUR)

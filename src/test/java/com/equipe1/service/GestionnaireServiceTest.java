@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +28,9 @@ class GestionnaireServiceTest {
 
     @MockBean
     GestionnaireRepository repository;
+
+    @Autowired
+    PasswordEncoder encoder;
 
     private Gestionnaire g1;
     private Gestionnaire g2;
@@ -77,6 +81,7 @@ class GestionnaireServiceTest {
     @DisplayName("TEST saveGestionnaire")
     void testSaveGestionnaire() {
         // Arrange
+        g1.setPassword(encoder.encode("12345"));
         doReturn(g1).when(repository).save(any());
         // Act
         Gestionnaire gestionnaire = service.saveGestionnaire(g1);
