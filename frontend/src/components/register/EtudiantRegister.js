@@ -3,6 +3,7 @@ import Etudiant from "../../model/Etudiant";
 import * as Yup from 'yup';
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import EtudiantService from "../../service/EtudiantService";
+import UserService from "../../service/UserService";
 
 const formSchema = Yup.object().shape({
 
@@ -62,7 +63,7 @@ export default class EtudiantRegister extends Component {
                     onSubmit={(values, actions) => {
                         return new Promise(function (resolve, reject) {
                             setTimeout(() => {
-                                resolve(EtudiantService.getByEmail(values.email)
+                                resolve(UserService.getByEmail(values.email)
                                     .then((val) => {
                                         if (val.email === values.email) {
                                             actions.setFieldError('email', "Adresse électronique déjà utilisée")

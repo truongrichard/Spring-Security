@@ -5,6 +5,7 @@ import Employeur from "../../model/Employeur";
 import EmployeurService from "../../service/EmployeurService";
 import {Formik, Field, Form, ErrorMessage} from "formik";
 import * as Yup from 'yup';
+import UserService from "../../service/UserService";
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{2,4}?[ \\-]*[0-9]{2,4}?$/;
 
@@ -58,9 +59,10 @@ export default class EmployeurRegister extends Component {
 
                                 return new Promise(function (resolve) {
                                     setTimeout(() => {
-                                        resolve(EmployeurService.getByEmail(values.email)
+                                        resolve(UserService.getByEmail(values.email)
                                             .then((val) => {
-
+                                                console.log(val.email)
+                                                console.log(values.email)
                                                 if (val.email === values.email) {
                                                     actions.setFieldError('email', "Adresse électronique déjà utilisée")
                                                 } else {

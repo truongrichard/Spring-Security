@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -15,7 +16,6 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-
 
     @GetMapping("findAll")
     public List<User> getAllUsers(){
@@ -29,5 +29,10 @@ public class UserController {
             return null;
         var user = optionalUser.get();
         return user.getPassword().equals(password) ? user: null;
+    }
+
+    @GetMapping("/email")
+    public User getUserByEmail(@RequestParam("email") String email){
+        return userRepository.findByEmail(email).isPresent() ? userRepository.findByEmail(email).get() : null;
     }
 }

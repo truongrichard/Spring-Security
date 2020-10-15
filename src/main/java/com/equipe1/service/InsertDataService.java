@@ -78,13 +78,12 @@ public class InsertDataService {
     }
 
     @Transactional
-    public void insertStage(){
-
+    public void insertEmployeur(){
         Employeur e1 = new Employeur();
-        e1.setEmail("banque2@email.com");
-        e1.setPassword(encoder.encode("12345"));
+        e1.setEmail("carlos.arturo.ortiz.celis@gmail.com");
+        e1.setPassword("12345");
         e1.setAdresse("12345");
-        e1.setNomEntreprise("banque2");
+        e1.setNomEntreprise("banque1");
         e1.setTelephone("888-888-8888");
 
         e1.setUsername("banque02");
@@ -96,6 +95,11 @@ public class InsertDataService {
         e1.setRoles(roles);
 
         employeurRepository.save(e1);
+    }
+
+    @Transactional
+    public void insertStage(){
+        Employeur e2 = employeurRepository.findEmployeurByEmail("carlos.arturo.ortiz.celis@gmail.com");
 
         Stage stage1 = new Stage();
         stage1.setTitre("stage_1");
@@ -108,9 +112,9 @@ public class InsertDataService {
         stage1.setProgramme("informatique");
         stage1.setNbHeuresParSemaine(35);
         stage1.setVille("Montreal");
-        stage1.setEmployeur(e1);
-
+        stage1.setEmployeur(e2);
         stageService.saveStage(stage1);
+
     }
 
     @Transactional
